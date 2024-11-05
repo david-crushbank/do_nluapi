@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import requests
 import json
 from functools import wraps
+import pyodbc
 
 app = Flask(__name__)
 
@@ -68,48 +69,42 @@ def process_data():
     return jsonify(result)
 
 @app.route('/test')
-def test_page():
-    return '''
-<html>
-<head>
-    <title>Simple Menu</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #333;
-        }
-        li {
-            float: left;
-        }
-        li a {
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-        li a:hover {
-            background-color: #111;
-        }
-    </style>
-</head>
-<body>
-    <ul>
-        <li><a href="#choice1">Choice 1</a></li>
-        <li><a href="#choice2">Choice 2</a></li>
-        <li><a href="#choice3">Choice 3</a></li>
-        <li><a href="#choice4">Choice 4</a></li>
-        <li><a href="#choice5">Choice 5</a></li>
-    </ul>
-</body>
-</html>
-        '''
+def connect_to_sql_server():
+    # Set your server name and database name here
+    server_name = '38.66.76.155'  # e.g., 'localhost\SQLEXPRESS' or '192.168.1.5'
+    database_name = 'CrushBank'
+    username = 'cb_digitalocean'  # Use your username here
+    password = '@19digitaL*oceaN$83'  # Use your password here
+
+    # Connection string
+    connection_string = f"""
+    DRIVER={{ODBC Driver 17 for SQL Server}};
+    SERVER={server_name};
+    DATABASE={database_name};
+    UID={username};
+    PWD={password};
+    Trusted_Connection=yes;
+    """
+
+    try:
+        # Establishing the connection to the database
+        conn = pyodbc.connect(connection_string)
+        print("Connection successful!")
+
+        # Example query: Selecting version of the SQL Server
+        cursor = conn.cursor()
+        cursor.execute("SELECT @@version;")
+        row = cursor.fetchone()
+        print(f"SQL Server version: {row[0]}")
+
+        # Always close the connection
+        conn.close()
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
+# Call the function to connect to the SQL Server
+connect_to_sql_server()
 
 
 if __name__ == '__main__':
