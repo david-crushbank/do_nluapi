@@ -67,6 +67,50 @@ def process_data():
     # Return the result to the user
     return jsonify(result)
 
+@app.route('/test')
+def test_page():
+    return '''
+<html>
+<head>
+    <title>Simple Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+        li {
+            float: left;
+        }
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        li a:hover {
+            background-color: #111;
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li><a href="#choice1">Choice 1</a></li>
+        <li><a href="#choice2">Choice 2</a></li>
+        <li><a href="#choice3">Choice 3</a></li>
+        <li><a href="#choice4">Choice 4</a></li>
+        <li><a href="#choice5">Choice 5</a></li>
+    </ul>
+</body>
+</html>
+        '''
+
 
 if __name__ == '__main__':
     app.run(debug=True)
