@@ -89,7 +89,7 @@ def connect_to_sql_server():
 
         # Fetch and display results
         for row in cursor:
-            print(row)
+            return row
 
         # Close the cursor and connection
         cursor.close()
