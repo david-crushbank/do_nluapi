@@ -44,7 +44,7 @@ def fetch_data():
     cursor = conn.cursor(as_dict=True)  # Use `as_dict=True` to get results as dictionaries
 
     # Execute a query
-    cursor.execute("SELECT TOP 10 * FROM your_table_name")
+    cursor.execute("SELECT TOP 10 * FROM Company")
 
     # Fetch all results
     results = cursor.fetchall()
