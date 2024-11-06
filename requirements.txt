@@ -43,3 +43,17 @@ pymssql==2.3.1
 requests==2.32.3
 urllib3==2.2.3
 Werkzeug==1.0.1
+certifi==2024.8.30
+charset-normalizer==3.4.0
+click==7.1.2
+Flask==1.1.2
+gunicorn==20.0.4
+idna==3.10
+itsdangerous==1.1.0
+Jinja2==2.11.3
+MarkupSafe==1.1.1
+pymssql==2.3.1
+pyodbc==5.2.0
+requests==2.32.3
+urllib3==2.2.3
+Werkzeug==1.0.1

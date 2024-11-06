@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import requests
 import json
 from functools import wraps
@@ -31,6 +31,30 @@ def require_apikey(f):
                 return jsonify({"message": "Invalid or missing API key"}), 403
 
     return decorated_function
+
+def fetch_data():
+    # Connect to the database# Replace these with your database details
+    server = '38.66.76.155'  # e.g., 'yourserver.database.windows.net'
+    username = 'cb_digitalocean'
+    password = '@19digitaL*oceaN$83'
+    database = 'CrushBank'
+
+    conn = pymssql.connect(server=server, user=username, password=password, database=database)
+    print("Connection successful!")
+    cursor = conn.cursor(as_dict=True)  # Use `as_dict=True` to get results as dictionaries
+
+    # Execute a query
+    cursor.execute("SELECT TOP 10 * FROM your_table_name")
+
+    # Fetch all results
+    results = cursor.fetchall()
+
+    # Close the cursor and connection
+    cursor.close()
+    conn.close()
+    print("Connection closed.")
+
+    return results
 
 
 @app.route('/v1/analyze', methods=['POST'])
@@ -69,38 +93,12 @@ def process_data():
     return jsonify(result)
 
 @app.route('/test')
-def connect_to_sql_server():
-    # Replace these with your database details
-    server = '38.66.76.155'  # e.g., 'yourserver.database.windows.net'
-    username = 'cb_digitalocean'
-    password = '@19digitaL*oceaN$83'
-    database = 'CrushBank'
+def index():
+    # Fetch data from the database
+    data = fetch_data()
 
-    try:
-        # Establish a connection to the remote SQL Server
-        conn = pymssql.connect(server=server, user=username, password=password, database=database)
-        print("Connection successful!")
-
-        # Create a cursor object to interact with the database
-        cursor = conn.cursor()
-
-        # Example query
-        cursor.execute("SELECT TOP 10 * FROM Company")
-
-        # Fetch and display results
-        for row in cursor:
-            return row
-
-        # Close the cursor and connection
-        cursor.close()
-        conn.close()
-        print("Connection closed.")
-
-    except pymssql.Error as e:
-        print("Error connecting to the SQL Server:", e)
-
-# Call the function to connect to the SQL Server
-connect_to_sql_server()
+    # Pass data to the HTML template
+    return render_template('index.html', data=data)
 
 
 if __name__ == '__main__':
