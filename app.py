@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 import requests
 import json
 from functools import wraps
-import pyodbc
+import pymssql
 
 app = Flask(__name__)
 
@@ -70,38 +70,34 @@ def process_data():
 
 @app.route('/test')
 def connect_to_sql_server():
-    # Set your server name and database name here
-    server_name = '38.66.76.155'  # e.g., 'localhost\SQLEXPRESS' or '192.168.1.5'
-    database_name = 'CrushBank'
-    username = 'cb_digitalocean'  # Use your username here
-    password = '@19digitaL*oceaN$83'  # Use your password here
-
-    # Connection string
-    connection_string = f"""
-    DRIVER={{ODBC Driver 17 for SQL Server}};
-    SERVER={server_name};
-    DATABASE={database_name};
-    UID={username};
-    PWD={password};
-    Trusted_Connection=yes;
-    """
+    # Replace these with your database details
+    server = '38.66.76.155'  # e.g., 'yourserver.database.windows.net'
+    username = 'cb_digitalocean'
+    password = '@19digitaL*oceaN$83'
+    database = 'CrushBank'
 
     try:
-        # Establishing the connection to the database
-        conn = pyodbc.connect(connection_string)
+        # Establish a connection to the remote SQL Server
+        conn = pymssql.connect(server=server, user=username, password=password, database=database)
         print("Connection successful!")
 
-        # Example query: Selecting version of the SQL Server
+        # Create a cursor object to interact with the database
         cursor = conn.cursor()
-        cursor.execute("SELECT @@version;")
-        row = cursor.fetchone()
-        print(f"SQL Server version: {row[0]}")
 
-        # Always close the connection
+        # Example query
+        cursor.execute("SELECT TOP 10 * FROM Company")
+
+        # Fetch and display results
+        for row in cursor:
+            print(row)
+
+        # Close the cursor and connection
+        cursor.close()
         conn.close()
-    except Exception as e:
-        print(f"An error occurred: {e}")
+        print("Connection closed.")
 
+    except pymssql.Error as e:
+        print("Error connecting to the SQL Server:", e)
 
 # Call the function to connect to the SQL Server
 connect_to_sql_server()
