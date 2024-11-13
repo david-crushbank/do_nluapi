@@ -72,7 +72,7 @@ def fetch_secret():
 
     if result:
         column_value = result[0]  # Access the first (and only) column value
-        return f"The value is: {column_value}"
+        return column_value
     else:
         return "No results found."
     #return results
@@ -140,7 +140,8 @@ def process_data():
 @app.route('/test')
 def index():
     # Fetch data from the database
-    return fetch_secret()
+    customer = fetch_secret()
+    return customer
     
 
 if __name__ == '__main__':
