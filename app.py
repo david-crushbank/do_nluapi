@@ -134,7 +134,7 @@ def process_data():
 def index():
     # Fetch data from the database
     data = fetch_secret()
-    return f"CustomerID: {data['customerID']}"
+    return f"CustomerID: {data[0]}"
     #return render_template('index.html', data=data)
 
 
