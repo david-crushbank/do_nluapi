@@ -63,7 +63,7 @@ def fetch_secret():
     
 
     # Fetch all results
-    results = cursor.fetchone()[0]
+    results = cursor.fetchone()
 
     # Close the cursor and connection
     cursor.close()
