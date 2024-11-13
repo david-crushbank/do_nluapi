@@ -62,7 +62,7 @@ def fetch_secret():
     
 
     # Fetch all results
-    results = cursor.fetchone()
+    results = cursor.fetchone()[0]
 
     # Close the cursor and connection
     cursor.close()
@@ -135,7 +135,7 @@ def process_data():
 def index():
     # Fetch data from the database
     data = fetch_secret()
-    return f"CustomerID: {data['customerID']}"
+    return f"CustomerID: {data[0]}"
     #return render_template('index.html', data=data)
 
 
