@@ -59,6 +59,7 @@ def fetch_secret():
 
     # Execute a query
     cursor.execute("select companyID from company where CompanyUuId = 'ce299ec9-0a9e-4fd9-bf80-00c542c36d8c'")
+    
 
     # Fetch all results
     results = cursor.fetchone()
@@ -134,7 +135,7 @@ def process_data():
 def index():
     # Fetch data from the database
     data = fetch_secret()
-    return f"CustomerID: {data[0]}"
+    return f"CustomerID: {data['customerID']}"
     #return render_template('index.html', data=data)
 
 
