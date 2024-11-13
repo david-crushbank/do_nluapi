@@ -138,7 +138,7 @@ def index():
     data = fetch_secret()
     
     for row in data:
-        return f"CustomerID: {row['customerID']}"
+        return f"CustomerID: {row[0]}"
     #return render_template('index.html', data=data)
 
 
