@@ -63,14 +63,19 @@ def fetch_secret():
     
 
     # Fetch all results
-    results = cursor.fetchone()
+    result = cursor.fetchone()
 
     # Close the cursor and connection
     cursor.close()
     conn.close()
     print("Connection closed.")
 
-    return results
+    if result:
+        column_value = result[0]  # Access the first (and only) column value
+        return f"The value is: {column_value}"
+    else:
+        return "No results found."
+    #return results
 
 def fetch_data():
     # Connect to the database# Replace these with your database details
@@ -135,12 +140,8 @@ def process_data():
 @app.route('/test')
 def index():
     # Fetch data from the database
-    data = fetch_secret()
+    return fetch_secret()
     
-    for row in data:
-        return f"CustomerID: {row[0]}"
-    #return render_template('index.html', data=data)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
