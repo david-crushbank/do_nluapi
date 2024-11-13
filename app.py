@@ -136,8 +136,8 @@ def index():
     data = fetch_secret()
 
     # Pass data to the HTML template
-    return data
-    #return render_template('index.html', data=data)
+    #return data
+    return render_template('index.html', data=data)
 
 
 if __name__ == '__main__':
