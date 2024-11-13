@@ -139,7 +139,7 @@ def index():
     #return data
     #companyid = data.companyID
     #return companyid
-    return data.items()
+    return data
     #return render_template('index.html', data=data)
 
 
