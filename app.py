@@ -140,7 +140,7 @@ def process_data():
 @app.route('/test')
 def index():
     # Fetch data from the database
-    customer = fetch_secret()
+    customer = str(fetch_secret())
     return customer
     
 
