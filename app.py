@@ -134,12 +134,7 @@ def process_data():
 def index():
     # Fetch data from the database
     data = fetch_secret()
-
-    # Pass data to the HTML template
-    #return data
-    #companyid = data.companyID
-    #return companyid
-    return data
+    return f"CustomerID: {data['customerID']}"
     #return render_template('index.html', data=data)
 
 
