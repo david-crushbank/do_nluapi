@@ -55,7 +55,8 @@ def fetch_secret():
 
     conn = pymssql.connect(server=server, user=username, password=password, database=database)
     print("Connection successful!")
-    cursor = conn.cursor(as_dict=True)  # Use `as_dict=True` to get results as dictionaries
+    #cursor = conn.cursor(as_dict=True)  # Use `as_dict=True` to get results as dictionaries
+    cursor = conn.cursor()
 
     # Execute a query
     cursor.execute("select companyID from company where CompanyUuId = 'ce299ec9-0a9e-4fd9-bf80-00c542c36d8c'")
@@ -135,7 +136,8 @@ def process_data():
 def index():
     # Fetch data from the database
     data = fetch_secret()
-    return f"CustomerID: {data[0]}"
+    
+    return f"CustomerID: {data.row[0]}"
     #return render_template('index.html', data=data)
 
 
