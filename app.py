@@ -137,7 +137,7 @@ def index():
 
     # Pass data to the HTML template
     #return data
-    companyid = data.companyid
+    companyid = data.companyID
     return companyid
     #return render_template('index.html', data=data)
 
