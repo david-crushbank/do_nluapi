@@ -61,7 +61,7 @@ def fetch_secret():
     cursor.execute("select companyID from company where CompanyUuId = 'ce299ec9-0a9e-4fd9-bf80-00c542c36d8c'")
 
     # Fetch all results
-    results = cursor.fetchall()
+    results = cursor.fetchone()
 
     # Close the cursor and connection
     cursor.close()
