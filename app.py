@@ -98,6 +98,7 @@ def index():
     data = fetch_data()
 
     # Pass data to the HTML template
+    return ('this is a test')
     return render_template('index.html', data=data)
 
 
