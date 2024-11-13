@@ -137,7 +137,9 @@ def index():
 
     # Pass data to the HTML template
     #return data
-    return render_template('index.html', data=data)
+    companyid = data.companyid
+    return companyid
+    #return render_template('index.html', data=data)
 
 
 if __name__ == '__main__':
