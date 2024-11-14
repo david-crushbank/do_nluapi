@@ -3,6 +3,13 @@ import requests
 import json
 from functools import wraps
 import pymssql
+import base64
+from Crypto.Cipher import AES
+from Crypto.Hash import SHA512
+from Crypto.Protocol.KDF import PBKDF2
+from Crypto.Util.Padding import pad, unpad
+from Crypto.Random import get_random_bytes
+import hashlib
 
 app = Flask(__name__)
 
@@ -15,8 +22,6 @@ def server_error(error):
     return jsonify(message='Internal server error'), 500
 
 # Store API key securely
-VALID_API_KEY = "MzE2LWJiMzllYTQyLWI1MGUtNGRlZS1hNDFhLWQ2ZDBiMjYxOWQwMQ=="
-VALID_API_KEY2 = "NTYwLTIzMmJkZTU0LTk2OTMtNGUyYy1iMzFmLWVlMTg0NmY5ZTE5Zg=="
 
 def require_apikey(f):
     @wraps(f)
@@ -62,30 +67,6 @@ def fetch_secret(company_id):
     else:
         return "No results found."
     #return results
-
-def fetch_data():
-    # Connect to the database# Replace these with your database details
-    server = '38.66.76.155'  # e.g., 'yourserver.database.windows.net'
-    username = 'cb_digitalocean'
-    password = '@19digitaL*oceaN$83'
-    database = 'CrushBank'
-
-    conn = pymssql.connect(server=server, user=username, password=password, database=database)
-    print("Connection successful!")
-    cursor = conn.cursor(as_dict=True)  # Use `as_dict=True` to get results as dictionaries
-
-    # Execute a query
-    cursor.execute("SELECT TOP 10 * FROM Company")
-
-    # Fetch all results
-    results = cursor.fetchall()
-
-    # Close the cursor and connection
-    cursor.close()
-    conn.close()
-    print("Connection closed.")
-
-    return results
 
 
 @app.route('/v1/analyze', methods=['POST'])
