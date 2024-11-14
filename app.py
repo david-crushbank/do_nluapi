@@ -59,7 +59,7 @@ def fetch_secret():
     cursor = conn.cursor()
 
     # Execute a query
-    cursor.execute("select companyID from company where CompanyUuId = 'ce299ec9-0a9e-4fd9-bf80-00c542c36d8c'")
+    cursor.execute("select CompanySecret from company where CompanyUuId = 'ce299ec9-0a9e-4fd9-bf80-00c542c36d8c'")
     
 
     # Fetch all results
@@ -140,7 +140,7 @@ def process_data():
 @app.route('/test')
 def index():
     # Fetch data from the database
-    customer = str(fetch_secret())
+    customer = fetch_secret()
     return customer
     
 
