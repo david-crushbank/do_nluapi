@@ -72,6 +72,9 @@ def require_apikey(f):
         clientid = json_data.get('clientid')
         plaintext = clientid + api_key
         encrypted_text = encrypt(plaintext)
+        print(clientid)
+        print(plaintext)
+        print(encrypted_text)
         if api_key and encrypted_text[105] == fetch_secret(clientid)[105]:
             return f(*args, **kwargs)
         else:
