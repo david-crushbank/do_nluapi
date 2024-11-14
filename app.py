@@ -45,7 +45,7 @@ def fetch_secret(company_id):
     cursor = conn.cursor()
 
     # Execute a query
-    cursor.execute("select CompanySecret from vwSecretLookup where CompanyUuId = ?", company_id)
+    cursor.execute('select CompanySecret from vwSecretLookup where CompanyUuId = %s', (company_id,))
     
 
     # Fetch all results
