@@ -22,31 +22,17 @@ def require_apikey(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         api_key = request.headers.get('x-api-key')
-        if api_key and api_key == VALID_API_KEY:
+        json_data = request.get_json()
+        clientid = json_data.get('clientid')
+        if api_key and api_key == fetch_secret(clientid):
             return f(*args, **kwargs)
         else:
-            if api_key and api_key == VALID_API_KEY2:
-                return f(*args, **kwargs)
-            else:
-                return jsonify({"message": "Invalid or missing API key"}), 403
+            return jsonify({"message": "Invalid or missing API key"}), 403
 
     return decorated_function
 
-def test_apikey(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        api_key = request.headers.get('x-api-key')
-        if api_key and api_key == VALID_API_KEY:
-            return f(*args, **kwargs)
-        else:
-            if api_key and api_key == VALID_API_KEY2:
-                return f(*args, **kwargs)
-            else:
-                return jsonify({"message": "Invalid or missing API key"}), 403
 
-    return decorated_function
-
-def fetch_secret():
+def fetch_secret(company_id):
     # Connect to the database# Replace these with your database details
     server = '38.66.76.155'  # e.g., 'yourserver.database.windows.net'
     username = 'cb_digitalocean'
@@ -59,7 +45,7 @@ def fetch_secret():
     cursor = conn.cursor()
 
     # Execute a query
-    cursor.execute("select CompanySecret from vwSecretLookup where CompanyUuId = 'ce299ec9-0a9e-4fd9-bf80-00c542c36d8c'")
+    cursor.execute("select CompanySecret from vwSecretLookup where CompanyUuId = ?", company_id)
     
 
     # Fetch all results
