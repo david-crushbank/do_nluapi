@@ -152,9 +152,7 @@ def process_data():
 
 @app.route('/test')
 def index():
-    # Fetch data from the database
-    customer = fetch_secret()
-    return customer
+    return "Hello World!"
     
 
 if __name__ == '__main__':
