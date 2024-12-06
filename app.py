@@ -119,11 +119,12 @@ def fetch_secret(company_id):
 @require_apikey
 def process_data():
     # Get input data from the user
-    user_input = request.json.get('input')
+    #user_input = request.json.get('input')
     json_data = request.get_json()
     model = json_data.get('model')
     text = json_data.get('text')
     clientid = json_data.get('clientid')
+
 
     # Send the input to another API
     api_url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/v1/analyze?version=2022-04-07"
@@ -154,10 +155,41 @@ def process_data():
 def index():
     return "Hello World!"
 
+@app.route('/v2/classification', methods=['POST'])  #Halo ticket classifier
+@require_apikey
+def halo_classification():
+    # Get input data from the user
+    #user_input = request.json.get('input')
+    json_data = request.get_json()
+    model = json_data.get('model')
+    text = json_data.get('text')
+    clientid = json_data.get('clientid')
+    mode = json_data.get('mode')
 
-@app.route('/v2/analyze')#, methods=['POST'])
-def test_halo():
-    return "This will be Halo"
+    # Send the input to another API
+    api_url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/v1/analyze?version=2022-04-07"
+    headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Basic YXBpa2V5Om1sZXJUTHNXTmYxYWJoajhoWWl2RWxrRUxlUHJ1Z1R6cmZLWVFwZGVRNWc3'
+    }
+
+    payload = json.dumps({
+        "text": text,
+        "features": {
+            "classifications": {
+                "model": model
+                }
+            }
+        })
+    response = requests.request("POST", api_url, headers=headers, data=payload)
+
+    #response = requests.post(api_url) #, json={'data': user_input})
+
+    # Process the response from the other API
+    result = response.json()
+
+    # Return the result to the user
+    return jsonify(result)
     
 
 if __name__ == '__main__':
