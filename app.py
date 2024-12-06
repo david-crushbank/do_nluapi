@@ -153,6 +153,11 @@ def process_data():
 @app.route('/test')
 def index():
     return "Hello World!"
+
+
+@app.route('/v2/analyze')#, methods=['POST'])
+def test_halo():
+    return "This will be Halo"
     
 
 if __name__ == '__main__':
