@@ -90,13 +90,15 @@ def require_apikey_halo(f):
         json_data = request.get_json()
         ###clientid = json_data.get('clientid')
         webhookid = json_data.get('webhook_id')
+        clientid = fetch_companyid_halo(webhookid)
         #plaintext = clientid + api_key
         #encrypted_text = encrypt(plaintext)
-        print(webhookid)
-        print(api_key)
+        print('webhook -', webhookid)
+        print('apikey -', api_key)
         coded_string = api_key[6:]
         decoded_apikey = base64.b64decode(coded_string).decode('ascii')
-        print(decoded_apikey)
+        print('decoded api-', decoded_apikey)
+        print('company_id -', clientid)
         ###print(encrypted_text)
         if api_key: #and encrypted_text[:105] == fetch_secret(clientid)[:105]:
             return f(*args, **kwargs)
@@ -104,6 +106,38 @@ def require_apikey_halo(f):
             return jsonify({"message": "Invalid or missing API key"}), 403
 
     return decorated_function
+
+
+def fetch_companyid_halo(webhookid):
+    # Connect to the database# Replace these with your database details
+    server = '38.66.76.155'  # e.g., 'yourserver.database.windows.net'
+    username = 'cb_digitalocean'
+    password = '@19digitaL*oceaN$83'
+    database = 'CrushBankHaloKeys'
+
+    conn = pymssql.connect(server=server, user=username, password=password, database=database)
+    print("Connection successful!")
+    #cursor = conn.cursor(as_dict=True)  # Use `as_dict=True` to get results as dictionaries
+    cursor = conn.cursor()
+
+    # Execute a query
+    cursor.execute('select CompanyUuid from KeyMap where webhook_id = %s', (webhookid,))
+    
+
+    # Fetch all results
+    result = cursor.fetchone()
+
+    # Close the cursor and connection
+    cursor.close()
+    conn.close()
+    print("Connection closed.")
+
+    if result:
+        column_value = result[0]  # Access the first (and only) column value
+        return column_value
+    else:
+        return "No results found."
+    #return results
 
 
 def fetch_secret(company_id):
@@ -136,6 +170,8 @@ def fetch_secret(company_id):
     else:
         return "No results found."
     #return results
+
+    
 
 
 @app.route('/v1/analyze', methods=['POST'])
