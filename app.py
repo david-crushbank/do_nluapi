@@ -86,7 +86,7 @@ def require_apikey(f):
 def require_apikey_halo(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        api_key = request.headers.get('Authorization')#('x-api-key')
+        authorization_header = request.headers.get('Authorization')#('x-api-key')
         json_data = request.get_json()
         ###clientid = json_data.get('clientid')
         webhookid = json_data.get('webhook_id')
@@ -94,11 +94,13 @@ def require_apikey_halo(f):
         #plaintext = clientid + api_key
         #encrypted_text = encrypt(plaintext)
         print('webhook -', webhookid)
-        print('apikey -', api_key)
-        coded_string = api_key[6:]
-        decoded_apikey = base64.b64decode(coded_string).decode('ascii')
-        print('decoded api-', decoded_apikey)
+        print('authorization_header -', authorization_header)
+        coded_string = authorization_header[6:]
+        decoded_header = base64.b64decode(coded_string).decode('ascii')
+        api_key = decoded_header[10:]
+        print('decoded api-', decoded_header)
         print('company_id -', clientid)
+        print('apikey -', api_key)
         ###print(encrypted_text)
         if api_key: #and encrypted_text[:105] == fetch_secret(clientid)[:105]:
             print('you did it!')
