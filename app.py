@@ -94,7 +94,7 @@ def require_apikey_halo(f):
         #encrypted_text = encrypt(plaintext)
         print(webhookid)
         print(api_key)
-        coded_string = webhookid[6:]
+        coded_string = api_key[6:]
         decoded_apikey = base64.b64decode(coded_string)
         print(decoded_apikey)
         ###print(encrypted_text)
