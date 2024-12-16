@@ -96,7 +96,7 @@ def require_apikey_halo(f):
         print(api_key)
         coded_string = webhookid[6:]
         decoded_apikey = base64.b64decode(coded_string)
-        print(coded_string)
+        print(decoded_apikey)
         ###print(encrypted_text)
         if api_key: #and encrypted_text[:105] == fetch_secret(clientid)[:105]:
             return f(*args, **kwargs)
