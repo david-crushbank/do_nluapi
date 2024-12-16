@@ -10,6 +10,7 @@ from Crypto.Protocol.KDF import PBKDF2
 from Crypto.Util.Padding import pad, unpad
 from Crypto.Random import get_random_bytes
 import hashlib
+import base64
 
 app = Flask(__name__)
 
@@ -93,6 +94,9 @@ def require_apikey_halo(f):
         #encrypted_text = encrypt(plaintext)
         print(webhookid)
         print(api_key)
+        coded_string = webhookid[6:]
+        decoded_apikey = base64.b64decode(coded_string)
+        print(coded_string)
         ###print(encrypted_text)
         if api_key: #and encrypted_text[:105] == fetch_secret(clientid)[:105]:
             return f(*args, **kwargs)
