@@ -82,6 +82,25 @@ def require_apikey(f):
 
     return decorated_function
 
+def require_apikey_halo(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        api_key = request.headers.get('x-api-key')
+        json_data = request.get_json()
+        ###clientid = json_data.get('clientid')
+        webhookid = json_data.get('webhook_id')
+        #plaintext = clientid + api_key
+        #encrypted_text = encrypt(plaintext)
+        print(webhookid)
+        print(api_key)
+        ###print(encrypted_text)
+        if api_key: #and encrypted_text[:105] == fetch_secret(clientid)[:105]:
+            return f(*args, **kwargs)
+        else:
+            return jsonify({"message": "Invalid or missing API key"}), 403
+
+    return decorated_function
+
 
 def fetch_secret(company_id):
     # Connect to the database# Replace these with your database details
@@ -156,7 +175,7 @@ def index():
     return "Hello World!"
 
 @app.route('/v2/classification', methods=['POST'])  #Halo ticket classifier
-@require_apikey
+@require_apikey_halo
 def halo_classification():
     # Get input data from the user
     #user_input = request.json.get('input')
