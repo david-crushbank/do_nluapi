@@ -85,7 +85,7 @@ def require_apikey(f):
 def require_apikey_halo(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        api_key = request.headers.get('x-api-key')
+        api_key = request.headers.get('Authorization')#('x-api-key')
         json_data = request.get_json()
         ###clientid = json_data.get('clientid')
         webhookid = json_data.get('webhook_id')
