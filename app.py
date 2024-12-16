@@ -102,7 +102,6 @@ def require_apikey_halo(f):
         print('apikey -', api_key)
         print(encrypted_text)
         if api_key and encrypted_text[:105] == fetch_secret(clientid)[:105]:
-            print('you did it!')
             return f(*args, **kwargs)
         else:
             return jsonify({"message": "Invalid or missing API key"}), 403
@@ -250,6 +249,7 @@ def halo_classification():
     result = response.json()
 
     # Return the result to the user
+    print(jsonify(result))
     return jsonify(result)
     
 
