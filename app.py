@@ -101,6 +101,7 @@ def require_apikey_halo(f):
         print('company_id -', clientid)
         ###print(encrypted_text)
         if api_key: #and encrypted_text[:105] == fetch_secret(clientid)[:105]:
+            print('you did it!')
             return f(*args, **kwargs)
         else:
             return jsonify({"message": "Invalid or missing API key"}), 403
