@@ -203,7 +203,28 @@ def fetch_secret(company_id):
         return "No results found."
     #return results
 
-    
+def log_request(company_id,ticket_id,halo_id):
+    # Connect to the database# Replace these with your database details
+    server = '38.66.76.155'  # e.g., 'yourserver.database.windows.net'
+    username = 'cb_digitalocean'
+    password = '@19digitaL*oceaN$83'
+    database = 'CrushBankHaloClassification'
+
+    conn = pymssql.connect(server=server, user=username, password=password, database=database)
+    print("Connection successful!")
+    #cursor = conn.cursor(as_dict=True)  # Use `as_dict=True` to get results as dictionaries
+    cursor = conn.cursor()
+
+    # Execute a query
+    sql = "INSERT INTO ClassificationLog (CompanyUuid, TicketNumber, HaloID) VALUES (%s, %s, %s)"
+    values = (company_id,ticket_id,halo_id)
+
+    cursor.execute(sql, values)
+
+    # Close the cursor and connection
+    cursor.close()
+    conn.close()
+    print("Connection closed.")
 
 
 @app.route('/v1/analyze', methods=['POST'])
@@ -281,6 +302,13 @@ def halo_classification():
 
     # Process the response from the other API
     result = response.json()
+
+    # Log the try to the database
+    company_id = fetch_companyid_halo(webhookid)
+    ticket_id = json_data.get('ticket', {}).get('id')
+    halo_id = json_data.get('id')
+    log_request(company_id,ticket_id,halo_id)
+
 
     # Return the result to the user
     print(jsonify(result))
