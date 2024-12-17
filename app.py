@@ -222,7 +222,7 @@ def halo_classification():
     #user_input = request.json.get('input')
     json_data = request.get_json()
     model = json_data.get('model')
-    text = json_data.get('text')
+    text = json_data.get('ticket', {}).get('details')
     clientid = json_data.get('clientid')
     mode = json_data.get('mode')
 
