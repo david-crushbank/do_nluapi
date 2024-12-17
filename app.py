@@ -221,7 +221,7 @@ def log_request(company_id,ticket_id,halo_id):
     #print(sql, values)
 
     #cursor.execute(sql, values)
-    cursor.execute('NSERT INTO ClassificationLog (CompanyUuid, TicketNumber, HaloID) VALUES (%s, %s, %s)', (company_id,ticket_id,halo_id,))
+    cursor.execute('INSERT INTO ClassificationLog (CompanyUuid, TicketNumber, HaloID) VALUES (%s, %s, %s)', (company_id,ticket_id,halo_id,))
 
     # Close the cursor and connection
     cursor.close()
