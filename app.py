@@ -216,12 +216,12 @@ def log_request(company_id,ticket_id,halo_id):
     cursor = conn.cursor()
 
     # Execute a query
-    #sql = "INSERT INTO ClassificationLog (CompanyUuid, TicketNumber, HaloID) VALUES (%s, %s, %s)"
-    #values = (company_id,ticket_id,halo_id)
-    #print(sql, values)
+    sql = "INSERT INTO ClassificationLog (CompanyUuid, TicketNumber, HaloID) VALUES (%s, %s, %s)"
+    values = (company_id,ticket_id,halo_id)
+    print(sql, values)
 
-    #cursor.execute(sql, values)
-    cursor.execute('INSERT INTO ClassificationLog (CompanyUuid, TicketNumber, HaloID) VALUES (%s, %s, %s)', (company_id,ticket_id,halo_id,))
+    cursor.execute(sql, values)
+    conn.commit()
 
     # Close the cursor and connection
     cursor.close()
