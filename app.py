@@ -259,10 +259,12 @@ def halo_classification():
     mode = ''
 
     # Send the input to another API
-    api_url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/v1/analyze?version=2022-04-07"
+    #api_url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/v1/analyze?version=2022-04-07" - US
+    api_url = "https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/v1/analyze?version=2022-04-07" #EU
     headers = {
     'Content-Type': 'application/json',
-    'Authorization': 'Basic YXBpa2V5Om1sZXJUTHNXTmYxYWJoajhoWWl2RWxrRUxlUHJ1Z1R6cmZLWVFwZGVRNWc3'
+    #'Authorization': 'Basic YXBpa2V5Om1sZXJUTHNXTmYxYWJoajhoWWl2RWxrRUxlUHJ1Z1R6cmZLWVFwZGVRNWc3' - US
+    'Authorization': 'Basic YXBpa2V5OkRtNklDNVhUcjZydy1EaVdTVGh2MlAtbkRGelZkcENFVkpVejlBZVI3bHlj' #EU
     }
 
     payload = json.dumps({
