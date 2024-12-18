@@ -171,6 +171,37 @@ def get_modelid_halo(webhookid):
         return "No results found."
     #return results
 
+def get_datacenter_halo(webhookid):
+    # Connect to the database# Replace these with your database details
+    server = '38.66.76.155'  # e.g., 'yourserver.database.windows.net'
+    username = 'cb_digitalocean'
+    password = '@19digitaL*oceaN$83'
+    database = 'CrushBankHaloKeys'
+
+    conn = pymssql.connect(server=server, user=username, password=password, database=database)
+    print("Connection successful!")
+    #cursor = conn.cursor(as_dict=True)  # Use `as_dict=True` to get results as dictionaries
+    cursor = conn.cursor()
+
+    # Execute a query
+    cursor.execute('select datacenter from KeyMap where webhook_id = %s', (webhookid,))
+    
+
+    # Fetch all results
+    result = cursor.fetchone()
+
+    # Close the cursor and connection
+    cursor.close()
+    conn.close()
+    print("Connection closed.")
+
+    if result:
+        column_value = result[0]  # Access the first (and only) column value
+        return column_value
+    else:
+        return "No results found."
+    #return results
+
 
 def fetch_secret(company_id):
     # Connect to the database# Replace these with your database details
@@ -280,15 +311,21 @@ def halo_classification():
     webhookid = json_data.get('webhook_id')
     model = get_modelid_halo(webhookid)
     mode = ''
+    data_center = get_datacenter_halo(webhookid)
 
     # Send the input to another API
-    #api_url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/v1/analyze?version=2022-04-07" - US
-    api_url = "https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/v1/analyze?version=2022-04-07" #EU
-    headers = {
-    'Content-Type': 'application/json',
-    #'Authorization': 'Basic YXBpa2V5Om1sZXJUTHNXTmYxYWJoajhoWWl2RWxrRUxlUHJ1Z1R6cmZLWVFwZGVRNWc3' - US
-    'Authorization': 'Basic YXBpa2V5OkRtNklDNVhUcjZydy1EaVdTVGh2MlAtbkRGelZkcENFVkpVejlBZVI3bHlj' #EU
-    }
+    if data_center == 'US': #send request to US datacenter
+        api_url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/v1/analyze?version=2022-04-07" #US
+        headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic YXBpa2V5Om1sZXJUTHNXTmYxYWJoajhoWWl2RWxrRUxlUHJ1Z1R6cmZLWVFwZGVRNWc3'
+        }
+    elif data_center == 'EU': #send request to EU datacenter
+        api_url = "https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/v1/analyze?version=2022-04-07" #EU
+        headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic YXBpa2V5OkRtNklDNVhUcjZydy1EaVdTVGh2MlAtbkRGelZkcENFVkpVejlBZVI3bHlj'
+        }
 
     payload = json.dumps({
         "text": text,
