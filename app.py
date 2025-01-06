@@ -351,9 +351,10 @@ def halo_classification():
 
     # Return the result to the user
     print('Result to query:')
-    print(jsonify(result))
-    return jsonify(result)
-    
+    #print(jsonify(result))
+    #return jsonify(result)
+    print(json.dumps(result))
+    return json.dumps(result)
 
 if __name__ == '__main__':
     app.run(debug=True)
