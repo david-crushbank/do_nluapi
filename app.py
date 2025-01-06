@@ -357,7 +357,7 @@ def halo_classification():
     raw_data = json.loads(raw_string)
     final_classification = raw_data["classifications"][0]["class_name"]
     #print(json.dumps(result))
-    print*(raw_string)
+    print(raw_string)
     print('Classification:')
     print(final_classification)
     return json.dumps(result)
