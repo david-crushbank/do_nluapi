@@ -234,7 +234,7 @@ def fetch_secret(company_id):
         return "No results found."
     #return results
 
-def log_request(company_id,ticket_id,halo_id):
+def log_request(company_id,ticket_id,halo_id, classification):
     # Connect to the database# Replace these with your database details
     server = '38.66.76.155'  # e.g., 'yourserver.database.windows.net'
     username = 'cb_digitalocean'
@@ -247,8 +247,8 @@ def log_request(company_id,ticket_id,halo_id):
     cursor = conn.cursor()
 
     # Execute a query
-    sql = "INSERT INTO ClassificationLog (CompanyUuid, TicketNumber, HaloID) VALUES (%s, %s, %s)"
-    values = (company_id,ticket_id,halo_id)
+    sql = "INSERT INTO ClassificationLog (CompanyUuid, TicketNumber, HaloID, CBClassification) VALUES (%s, %s, %s, %s)"
+    values = (company_id,ticket_id,halo_id,classification)
     print(sql, values)
 
     cursor.execute(sql, values)
@@ -342,24 +342,26 @@ def halo_classification():
     # Process the response from the other API
     result = response.json()
 
-    # Log the try to the database
-    company_id = fetch_companyid_halo(webhookid)
-    ticket_id = json_data.get('ticket', {}).get('id')
-    halo_id = json_data.get('id')
-    log_request(company_id,ticket_id,halo_id)
-
-
     # Return the result to the user
-    print('Raw data:')
+    #print('Raw data:')
     #print(jsonify(result))
     #return jsonify(result)
     raw_string = json.dumps(result)
     raw_data = json.loads(raw_string)
     final_classification = raw_data["classifications"][0]["class_name"]
     #print(json.dumps(result))
-    print(raw_string)
+    #print(raw_string)
     print('Classification:')
     print(final_classification)
+
+    # Log the try to the database
+    company_id = fetch_companyid_halo(webhookid)
+    ticket_id = json_data.get('ticket', {}).get('id')
+    halo_id = json_data.get('id')
+    classification = final_classification
+    log_request(company_id,ticket_id,halo_id,classification)
+
+
     return json.dumps(result)
 
 if __name__ == '__main__':
