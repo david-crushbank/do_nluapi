@@ -312,6 +312,7 @@ def halo_classification():
     model = get_modelid_halo(webhookid)
     mode = ''
     data_center = get_datacenter_halo(webhookid)
+    #api_mode = get_mode_halo(webhookid)
 
     # Send the input to another API
     if data_center == 'US': #send request to US datacenter
