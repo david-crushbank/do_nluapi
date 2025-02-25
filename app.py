@@ -233,7 +233,6 @@ def get_mode_halo(webhookid):
         return "No results found."
     #return results
 
-
 def fetch_secret(company_id):
     # Connect to the database# Replace these with your database details
     server = '38.66.76.155'  # e.g., 'yourserver.database.windows.net'
@@ -289,6 +288,53 @@ def log_request(company_id,ticket_id,halo_id, classification):
     cursor.close()
     conn.close()
     print("Connection closed.")
+
+
+def halo_update_category(webhookid):
+    # Get access token
+
+    # Connect to the database for client details
+    server = '38.66.76.155'  
+    username = 'cb_digitalocean'
+    password = '@19digitaL*oceaN$83'
+    database = 'CrushBankHaloKeys'
+
+    conn = pymssql.connect(server=server, user=username, password=password, database=database)
+    cursor = conn.cursor()
+
+    # Execute a query
+    cursor.execute('select instance_url, authorization_url, tenant, clientID, clientSecret from KeyMap where webhook_id = %s', (webhookid,))
+    
+
+    # Fetch all results
+    result = cursor.fetchone()
+
+    # Close the cursor and connection
+    cursor.close()
+    conn.close()
+
+    # Populate required variables
+    instance_url = result[0]
+    authorization_url = result[1]
+    tenant = result[2]
+    clientID = result[3]
+    clientSecret = result[4]
+
+    # Set varialbes used to get authentication token
+    url = "https://crushbank.halopsa.com/auth/token?tenant=crushbank"
+    
+    payload = f('grant_type=client_credentials&client_id={clientID}&scope=all&client_secret={clientSecret}')
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+    
+    response = requests.request("POST", url, headers=headers, data=payload)
+    data = response.json()
+    result = json.dumps(data)
+    raw_data = json.loads(result)
+    token = raw_data['access_token']
+    print(token)
+
 
 
 @app.route('/v1/analyze', methods=['POST'])
@@ -396,6 +442,8 @@ def halo_classification():
     # Write back to the customer tenant if writeback mode is enabled
     if api_mode == 'write':
         print('write')
+        halo_update_category(webhookid)
+
     else:
         print('report')
 
