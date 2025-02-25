@@ -290,7 +290,7 @@ def log_request(company_id,ticket_id,halo_id, classification):
     print("Connection closed.")
 
 
-def halo_update_category(webhookid):
+def halo_update_category(webhookid, ticket_id, classification):
     # Get access token
 
     # Connect to the database for client details
@@ -321,7 +321,8 @@ def halo_update_category(webhookid):
     clientSecret = result[4]
 
     # Set varialbes used to get authentication token
-    url = "https://crushbank.halopsa.com/auth/token?tenant=crushbank"
+    #url = "https://crushbank.halopsa.com/auth/token?tenant=crushbank"
+    url = f'{authorization_url}/token?tenant={tenant}'
     
     payload = f'grant_type=client_credentials&client_id={clientID}&scope=all&client_secret={clientSecret}'
     headers = {
@@ -334,6 +335,9 @@ def halo_update_category(webhookid):
     raw_data = json.loads(result)
     token = raw_data['access_token']
     print(token)
+
+    # Connect to Halo tenant and update ticket
+    update_url = f'{instance_url}'
 
 
 
@@ -442,7 +446,7 @@ def halo_classification():
     # Write back to the customer tenant if writeback mode is enabled
     if api_mode == 'write':
         print('write')
-        halo_update_category(webhookid)
+        halo_update_category(webhookid, ticket_id, classification)
 
     else:
         print('report')
