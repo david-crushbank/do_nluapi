@@ -323,7 +323,7 @@ def halo_update_category(webhookid):
     # Set varialbes used to get authentication token
     url = "https://crushbank.halopsa.com/auth/token?tenant=crushbank"
     
-    payload = f('grant_type=client_credentials&client_id={clientID}&scope=all&client_secret={clientSecret}')
+    payload = f'grant_type=client_credentials&client_id={clientID}&scope=all&client_secret={clientSecret}'
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded'
     }
