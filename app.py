@@ -320,6 +320,9 @@ def halo_update_category(webhookid, ticket_id, classification):
     clientID = result[3]
     clientSecret = result[4]
 
+    # Fix formatting of classification
+    update_classification = classification.replace('|','>')
+
     # Set varialbes used to get authentication token
     #url = "https://crushbank.halopsa.com/auth/token?tenant=crushbank"
     url = f'{authorization_url}/token?tenant={tenant}'
@@ -337,7 +340,16 @@ def halo_update_category(webhookid, ticket_id, classification):
     print(token)
 
     # Connect to Halo tenant and update ticket
-    update_url = f'{instance_url}'
+    update_url = f'{instance_url}/Tickets'
+    payload_text = f'[{{"id": {ticket_id}, "category_1": "{update_classification}"}}]'
+    update_payload = json.dumps(payload_text)
+    update_headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + str(token)
+    }
+    
+    response = requests.request("POST", update_url, headers=update_headers, data=update_payload)
+
 
 
 
