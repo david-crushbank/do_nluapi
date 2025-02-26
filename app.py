@@ -341,8 +341,6 @@ def halo_update_category(webhookid, ticket_id, classification):
 
     # Connect to Halo tenant and update ticket
     update_url = f'{instance_url}/Tickets'
-    payload_text = f'[{{"id": {ticket_id}, "category_1": "{update_classification}"}}]'
-    #update_payload = json.dumps(payload_text)
     update_payload = json.dumps([{
         "id": ticket_id,
         "category_1": update_classification
@@ -353,12 +351,8 @@ def halo_update_category(webhookid, ticket_id, classification):
     }
     
     update_response = requests.request("POST", update_url, headers=update_headers, data=update_payload)
-    print(update_url)
-    print(update_headers)
-    print(update_payload)
     print(update_classification)
     print(update_response)
-    print(update_response.text)
 
 
 
