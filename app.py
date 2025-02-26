@@ -348,11 +348,12 @@ def halo_update_category(webhookid, ticket_id, classification):
     'Authorization': 'Bearer ' + str(token)
     }
     
-    response = requests.request("POST", update_url, headers=update_headers, data=update_payload)
+    update_response = requests.request("POST", update_url, headers=update_headers, data=update_payload)
     print(update_url)
     print(update_headers)
     print(update_payload)
     print(update_classification)
+    print(update_response)
 
 
 
