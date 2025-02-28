@@ -356,7 +356,7 @@ def halo_update_category(webhookid, ticket_id, classification):
     print(update_payload)
     print(update_classification)
     print(update_response)
-    print(update_response.text)
+    #print(update_response.text)
 
 
 
